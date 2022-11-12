@@ -38,8 +38,10 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   carousel_slider: ^4.1.1-nullsafety.0
+  html: ^0.15.1
+  scroll_to_id: ^1.5.1
+  
 
-  url_launcher: ^5.7.5
 
 dev_dependencies:
   flutter_test:

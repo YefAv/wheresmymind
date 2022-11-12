@@ -1,9 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import '../constant.dart';
 import '../default_widget.dart';
+import 'dart:html' as html;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -58,28 +57,81 @@ class _HomePageState extends State<HomePage> {
             ))
         .toList();
 
+    void htmlOpenLink() {
+      String url = 'https://globalgamejam.org/2021/games/wheres-my-mind-7';
+      html.window.open(url, '_blank');
+    }
+
+    void htmlDownloadLink() {
+      String url =
+          'https://drive.google.com/file/d/1dV80AruOKws0somJ5KZ_ByEHp4K_z5Lz/view?usp=share_link';
+      html.window.open(url, '_blank');
+    }
+
+    ScrollController _controller = ScrollController();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
+          //AppBar
           SliverAppBar(
             toolbarHeight: 100,
             backgroundColor: primaryColor,
             centerTitle: true,
             title: RichText(
                 textAlign: TextAlign.center,
-                text: const TextSpan(children: [
-                  TextSpan(
-                      text: "WHERE'S MY MIND?\n",
-                      style:
-                          TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-                  TextSpan(
-                      text: 'Disponible en PC!',
-                      style: TextStyle(fontSize: 22)),
-                ],
+                text: const TextSpan(
+                  children: [
+                    TextSpan(
+                        text: "WHERE'S MY MIND?\n",
+                        style: TextStyle(
+                            fontSize: 32, fontWeight: FontWeight.bold)),
+                    TextSpan(
+                        text: 'Disponible en PC!',
+                        style: TextStyle(fontSize: 22)),
+                  ],
                 )),
+            actions: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  htmlDownloadLink();
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(left: 25),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width / 4.3,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: Image.network(
+                          'https://media.discordapp.net/attachments/268907328961511435/1040797767766908968/menu3.png',
+                          height: 20,
+                        ),
+                      ),
+                      const Flexible(
+                        child: Text(
+                          'Descargar',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black54,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
-          
+
+          //Carrusel
           sliverList(
             child: Container(
                 margin: const EdgeInsets.only(top: 25, bottom: 25),
@@ -95,7 +147,69 @@ class _HomePageState extends State<HomePage> {
                   items: imageSliders,
                 )),
           ),
-          
+          //Info
+          sliverList(
+              child: Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 10,
+            ),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              color: secondaryColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  blurRadius: 5,
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 567,
+                  height: 402,
+                  decoration: BoxDecoration(
+                    color: primaryColor,
+                    borderRadius: BorderRadius.circular(20),
+                    image: const DecorationImage(
+                      image: NetworkImage(
+                          'https://media.discordapp.net/attachments/268907328961511435/1040804189028225045/image5.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      const Text(
+                        'Sobre el juego',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Text(
+                        '\nJulián, un joven universitario que día a día intenta sacar adelante su carrera universitaria, está teniendo mucho estrés estudiando su semestre virtual. Se está perdiendo en su mente, sin concentración y sin ninguna motivación para continuar. Quiere convertirse en un mejor estudiante pero conseguirlo no será una tarea fácil, tendrá que sortear todos los obstáculos para alcanzar su meta. Ayuda a Julian a encontrar su motivación para continuar su semestre virtual. Corre por un laberinto evitando las distracciones y recupera la motivación.',
+                        style: TextStyle(
+                          fontSize: 22,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )),
+          //GGJ Barra
           sliverList(
             child: Container(
               padding: const EdgeInsets.symmetric(
@@ -120,9 +234,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
                 image: const DecorationImage(
-                  image: NetworkImage('https://media.discordapp.net/attachments/268907328961511435/1040775522688450671/distraccionIdle14.png?width=1202&height=676'),
+                  image: NetworkImage(
+                      'https://media.discordapp.net/attachments/268907328961511435/1040775522688450671/distraccionIdle14.png?width=1202&height=676'),
                   alignment: Alignment.centerRight,
-                  
                 ),
               ),
               height: 170,
@@ -159,18 +273,85 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    child: const Text(
-                      'Sitio Web',
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.black,
+                    child: InkWell(
+                      child: const Text(
+                        'Sitio Web',
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.black,
+                        ),
                       ),
+                      onTap: () => htmlOpenLink(),
                     ),
                   ),
                 ],
               ),
             ),
           ),
+          //Equipo
+          sliverList(
+              child: Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 10,
+            ),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              color: secondaryColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  blurRadius: 5,
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 567,
+                  height: 402,
+                  decoration: BoxDecoration(
+                    color: primaryColor,
+                    borderRadius: BorderRadius.circular(20),
+                    image: const DecorationImage(
+                      image: NetworkImage(
+                          'https://media.discordapp.net/attachments/268907328961511435/1040804206338134016/image6.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      const Text(
+                        'Equipo',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Text(
+                        '\nYefri Avella\nMariana Cano\nJordan Bolivar\nValentina Gil\nAndrés Álvarez\n\nEstudiantes de Ingeniería en Diseño de Entretenimiento Digital de la Universidad Pontificia Bolivariana.',
+                        style: TextStyle(
+                          fontSize: 22,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )),
+          /*],
+          ),*/
         ],
       ),
     );
